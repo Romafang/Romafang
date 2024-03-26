@@ -1,0 +1,275 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Fengzi7的奇妙空间 | Fengzi7的奇妙空间</title><meta name="author" content="封子期"><meta name="copyright" content="封子期"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="1. 虚拟地址空间虚拟地址空间是一个非常抽象的概念，先根据字面意思进行解释： 它可以用来加载程序数据（数据可能被加载到物理内存上，空间不够就加载到虚拟内存中）它对应着一段连续的内存地址，起始位置为 0。之所以说虚拟是因为这个起始的0地址是被虚拟出来的， 不是物理内存的 0地址。 虚拟地址空间的大小也由操作系统决定，32位的操作系统虚拟地址空间的大小为 2^32 字节，也就是4G，64位的操作系统虚">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fengzi7的奇妙空间">
+<meta property="og:url" content="https://fengzi7.magicalroom.com/2024/03/26/%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80%E5%92%8C%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6/index.html">
+<meta property="og:site_name" content="Fengzi7的奇妙空间">
+<meta property="og:description" content="1. 虚拟地址空间虚拟地址空间是一个非常抽象的概念，先根据字面意思进行解释： 它可以用来加载程序数据（数据可能被加载到物理内存上，空间不够就加载到虚拟内存中）它对应着一段连续的内存地址，起始位置为 0。之所以说虚拟是因为这个起始的0地址是被虚拟出来的， 不是物理内存的 0地址。 虚拟地址空间的大小也由操作系统决定，32位的操作系统虚拟地址空间的大小为 2^32 字节，也就是4G，64位的操作系统虚">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.4kbizhi.com/d/file/2023/04/23/small085241B2SIA1682211161.jpg">
+<meta property="article:published_time" content="2024-03-26T09:30:04.592Z">
+<meta property="article:modified_time" content="2024-03-26T10:10:33.134Z">
+<meta property="article:author" content="封子期">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.4kbizhi.com/d/file/2023/04/23/small085241B2SIA1682211161.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://fengzi7.magicalroom.com/2024/03/26/%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80%E5%92%8C%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=4.13.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":false,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.11.1/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Fengzi7的奇妙空间',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-03-26 18:10:33'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/background.css"><link rel="stylesheet" href="APlayer.min.css"><div id="aplayer"></div><script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js" async></script><meta name="generator" content="Hexo 7.1.1"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/boqi.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">1</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://www.4kbizhi.com/d/file/2023/04/23/small085241B2SIA1682211161.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="Fengzi7的奇妙空间"><span class="site-name">Fengzi7的奇妙空间</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">无题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-03-26T09:30:04.592Z" title="发表于 2024-03-26 17:30:04">2024-03-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-03-26T10:10:33.134Z" title="更新于 2024-03-26 18:10:33">2024-03-26</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="1-虚拟地址空间"><a href="#1-虚拟地址空间" class="headerlink" title="1. 虚拟地址空间"></a>1. 虚拟地址空间</h1><p>虚拟地址空间是一个非常抽象的概念，先根据字面意思进行解释：</p>
+<p>它可以用来加载程序数据（数据可能被加载到物理内存上，空间不够就加载到虚拟内存中）<br>它对应着一段连续的内存地址，起始位置为 0。<br>之所以说虚拟是因为这个起始的0地址是被虚拟出来的， 不是物理内存的 0地址。</p>
+<p>虚拟地址空间的<strong>大小也由操作系统决定</strong>，32位的操作系统虚拟地址空间的大小为 2^32 字节，也就是4G，64位的操作系统虚拟地址空间大小为2^64 字节，这是一个非常大的数。<strong>当我们运行磁盘上一个可执行程序, 就会得到一个进程，内核会给每一个运行的进程创建一块属于自己的虚拟地址空间，并将应用程序数据装载到虚拟地址空间对应的地址上。</strong></p>
+<p>进程在运行过程中，程序内部所有的指令都是通过CPU处理完成的，CPU只进行数据运算并不具备数据存储的能力，其处理的数据都加载自物理内存，那么进程中的数据是如何进出入到物理内存中的呢？其实是通过CPU中的内存管理单元MMU（Memory Management Unit）从进程的虚拟地址空间中映射过去的。</p>
+<p><img src="https://raw.githubusercontent.com/romafang/picgo/master/data/202403261732435.png" alt="img"></p>
+<h2 id="1-1-存在的意义"><a href="#1-1-存在的意义" class="headerlink" title="1.1 存在的意义"></a>1.1 存在的意义</h2><p>为什么操作系统不直接将数据加载到物理内存中而是将数据加载到虚拟地址空间中，在通过CPU的MMU映射到物理内存中呢？</p>
+<p>如果直接将数据加载到物理内存会发生什么事情</p>
+<p><img src="https://raw.githubusercontent.com/romafang/picgo/master/data/202403261733507.png" alt="img"></p>
+<p>假设计算机的物理内存大小为1G, 进程A需要100M内存因此直接在物理内存上从0地址开始分配100M, 进程B启动需要250M内存, 因此继续在物理内存上为其分配250M内存, 并且进程A和进程B占用的内存是连续的。之后再启动其他进程继续按照这种方法进行物理内存的分配。。。</p>
+<p>使用这种方式分配内存会有如下几个问题：</p>
+<p><strong>每个进程的地址不隔离，有安全风险。</strong></p>
+<p>由于程序都是直接访问物理内存，所以恶意程序可以通过内存寻址随意修改别的进程对应的内存数据，以达到破坏的目的。虽然有些时候是非恶意的，但是有些存在 bug 的程序可能不小心修改了其它程序的内存数据，就会导致其它程序的运行出现异常。</p>
+<p><strong>内存效率低。</strong></p>
+<p>如果直接使用物理内存的话，一个进程对应的内存块就是作为一个整体操作的，如果出现物理内存不够用的时候，我们一般的办法是将不常用的进程拷贝到磁盘的交换分区（虚拟内存）中，以便腾出内存，因此就需要将整个进程一起拷走，如果数据量大，在内存和磁盘之间拷贝时间就会很长，效率低下。</p>
+<p><strong>进程中数据的地址不确定，每次都会发生变化。</strong></p>
+<p>由于物理内存的使用情况一直在动态的变化，我们无法确定内存现在使用到哪里了，如果直接将程序数据加载到物理内存，内存中每次存储数据的起始地址都是不一样的，这样数据的加载都需要使用相对地址，加载效率低（静态库是使用绝对地址加载的）。</p>
+<figure class="highlight txt"><table><tr><td class="code"><pre><span class="line">有了虚拟地址空间之后就可以完美的解决上边提到的所有问题了</span><br><span class="line"></span><br><span class="line">虚拟地址空间就是一个中间层，相当于在程序和物理内存之间设置了一个屏障，将二者隔离开来。程序中访问的内存地址不再是实际的物理内存地址，而是一个虚拟地址，然后由操作系统将这个虚拟地址映射到适当的物理内存地址上。</span><br><span class="line"></span><br><span class="line">这样，只要操作系统处理好虚拟地址到物理内存地址的映射，就可以保证不同的程序最终访问的内存地址位于不同的区域，彼此没有重叠，就可以达到内存地址空间隔离的效果。</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-2-分区"><a href="#1-2-分区" class="headerlink" title="1.2 分区"></a>1.2 分区</h2><p>从操作系统层级上看，虚拟地址空间主要分为两个部分内核区和用户区。</p>
+<p>&#x3D;&#x3D;内核区：&#x3D;&#x3D;<br>内核空间为内核保留，<strong>不允许应用程序读写该区域的内容或直接调用内核代码定义的函数。</strong><br>内核总是驻留在内存中，是操作系统的一部分。<br><strong>系统中所有进程对应的虚拟地址空间的内核区都会映射到同一块物理内存上（系统内核只有一个）。</strong><br>用户区：存储用户程序运行中用到的各种数据。<br>我们先来看一下进程对应的虚拟地址空间的各个分区，再来详细介绍用户区的组成（以32位系统的虚拟地址空间为例）。</p>
+<p><img src="https://raw.githubusercontent.com/romafang/picgo/master/data/202403261755722.png" alt="img"></p>
+<p>每个进程的虚拟地址空间都是从0地址开始的，我们在程序中打印的变量地址也其在虚拟地址空间中的地址，程序是无法直接访问物理内存的。虚拟地址空间中用户区地址范围是 0~3G，里边分为多个区块：</p>
+<p>**保留区: **位于虚拟地址空间的最底部，未赋予物理地址。任何对它的引用都是非法的，程序中的空指针（NULL）指向的就是这块内存地址。</p>
+<p>**.text段: **代码段也称正文段或文本段，通常用于存放程序的执行代码(即CPU执行的机器指令)，代码段一般情况下是只读的，这是对执行代码的一种保护机制。</p>
+<p>**.data段: **数据段通常用于存放程序中已初始化且初值不为0的全局变量和静态变量。数据段属于静态内存分配(静态存储区)，可读可写。</p>
+<p>**.bss段: **未初始化以及初始为0的全局变量和静态变量，操作系统会将这些未初始化变量初始化为0</p>
+<p><strong>堆(heap)：</strong>用于存放进程运行时动态分配的内存。<br>堆中内容是匿名的，不能按名字直接访问，只能通过指针间接访问。<br>堆向高地址扩展(即“向上生长”)，是不连续的内存区域。这是由于系统用链表来存储空闲内存地址，自然不连续，而链表从低地址向高地址遍历。</p>
+<p><strong>内存映射区(mmap)：作</strong>为内存映射区加载磁盘文件，或者加载程序运作过程中需要调用的动态库。</p>
+<p>**栈(stack): **存储函数内部声明的非静态局部变量，函数参数，函数返回地址等信息，栈内存由编译器自动分配释放。栈和堆相反地址“向下生长”，分配的内存是连续的。</p>
+<p><strong>命令行参数：</strong>存储进程执行的时候传递给main()函数的参数，argc，argv[]</p>
+<p>**环境变量: **存储和进程相关的环境变量, 比如: 工作路径, 进程所有者等信息</p>
+<h1 id="2-文件描述符"><a href="#2-文件描述符" class="headerlink" title="2. 文件描述符"></a>2. 文件描述符</h1><h2 id="2-1-文件描述符"><a href="#2-1-文件描述符" class="headerlink" title="2.1 文件描述符"></a>2.1 文件描述符</h2><p>在Linux操作系统中的一切都被抽象成了文件，那么一个打开的文件是如何与应用程序进行对应呢？解决方案是使用<strong>文件描述符（file descriptor，简称fd），当在进程中打开一个现有文件或者创建一个新文件时，内核向该进程返回一个文件描述符，用于对应这个打开&#x2F;新建的文件。</strong>这些文件描述符都存储在内核为每个进程维护的一个文件描述符表中。</p>
+<p>在程序设计中，一些涉及底层的程序编写往往会围绕着文件描述符展开。但是文件描述符这一概念往往只适用于UNIX、Linux这样的操作系统。</p>
+<p>在Linux系统中一切皆文件，系统中一切都被抽象成了文件。对这些文件的读写都需要通过文件描述符来完成。标准C库的文件IO函数使用的文件指针FILE*在Linux中也需要通过文件描述符的辅助才能完成读写操作。FILE其实是一个结构体，其内部有一个成员就是文件描述符（下面结构体的第25行）。</p>
+<p><strong>FILE结构体在Linux头文件中的定义</strong></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// linux c FILE结构体定义： /usr/include/libio.h</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">_IO_FILE</span> &#123;</span><br><span class="line">  <span class="type">int</span> _flags;		<span class="comment">/* High-order word is _IO_MAGIC; rest is flags. */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _IO_file_flags _flags</span></span><br><span class="line"> </span><br><span class="line">  <span class="comment">/* The following pointers correspond to the C++ streambuf protocol. */</span></span><br><span class="line">  <span class="comment">/* Note:  Tk uses the _IO_read_ptr and _IO_read_end fields directly. */</span></span><br><span class="line">  <span class="type">char</span>* _IO_read_ptr;	<span class="comment">/* Current read pointer */</span></span><br><span class="line">  <span class="type">char</span>* _IO_read_end;	<span class="comment">/* End of get area. */</span></span><br><span class="line">  <span class="type">char</span>* _IO_read_base;	<span class="comment">/* Start of putback+get area. */</span></span><br><span class="line">  <span class="type">char</span>* _IO_write_base;	<span class="comment">/* Start of put area. */</span></span><br><span class="line">  <span class="type">char</span>* _IO_write_ptr;	<span class="comment">/* Current put pointer. */</span></span><br><span class="line">  <span class="type">char</span>* _IO_write_end;	<span class="comment">/* End of put area. */</span></span><br><span class="line">  <span class="type">char</span>* _IO_buf_base;	<span class="comment">/* Start of reserve area. */</span></span><br><span class="line">  <span class="type">char</span>* _IO_buf_end;	<span class="comment">/* End of reserve area. */</span></span><br><span class="line">  <span class="comment">/* The following fields are used to support backing up and undo. */</span></span><br><span class="line">  <span class="type">char</span> *_IO_save_base; <span class="comment">/* Pointer to start of non-current get area. */</span></span><br><span class="line">  <span class="type">char</span> *_IO_backup_base;  <span class="comment">/* Pointer to first valid character of backup area */</span></span><br><span class="line">  <span class="type">char</span> *_IO_save_end; <span class="comment">/* Pointer to end of non-current get area. */</span></span><br><span class="line"> </span><br><span class="line">  <span class="keyword">struct</span> <span class="title class_">_IO_marker</span> *_markers;</span><br><span class="line"> </span><br><span class="line">  <span class="keyword">struct</span> <span class="title class_">_IO_FILE</span> *_chain;</span><br><span class="line"> </span><br><span class="line">  <span class="type">int</span> _fileno;			<span class="comment">// 文件描述符</span></span><br><span class="line"><span class="meta">#<span class="keyword">if</span> 0</span></span><br><span class="line">  <span class="type">int</span> _blksize;</span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">  <span class="type">int</span> _flags2;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">  _IO_off_t _old_offset; <span class="comment">/* This used to be _offset but it&#x27;s too small.  */</span></span><br><span class="line"> </span><br><span class="line"><span class="meta">#<span class="keyword">define</span> __HAVE_COLUMN <span class="comment">/* temporary */</span></span></span><br><span class="line">  <span class="comment">/* 1+column number of pbase(); 0 is unknown. */</span></span><br><span class="line">  <span class="type">unsigned</span> <span class="type">short</span> _cur_column;</span><br><span class="line">  <span class="type">signed</span> <span class="type">char</span> _vtable_offset;</span><br><span class="line">  <span class="type">char</span> _shortbuf[<span class="number">1</span>];</span><br><span class="line"> </span><br><span class="line">  <span class="comment">/*  char* _save_gptr;  char* _save_egptr; */</span></span><br><span class="line"> </span><br><span class="line">  _IO_lock_t *_lock;</span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> _IO_USE_OLD_IO_FILE</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在文件: /usr/include/stdio.h</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">_IO_FILE</span> FILE;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-文件描述符表"><a href="#2-2-文件描述符表" class="headerlink" title="2.2 文件描述符表"></a>2.2 文件描述符表</h2><p>前面讲到启动一个进程就会得到一个对应的虚拟地址空间，这个虚拟地址空间分为两大部分，在内核区有专门用于进程管理的模块。Linux的进程控制块PCB（process control block）本质是一个叫做<strong>task_struct</strong>的结构体，里边包括管理进程所需的各种信息，其中有一个结构体叫做<strong>file</strong> ，我们将它叫做文件描述符表，里边有一个整形索引表,用于存储文件描述符。</p>
+<p>内核为每一个进程维护了一个文件描述符表，索引表中的值都是从0开始的，所以在不同的进程中你会看到相同的文件描述符，但是它们指向的不一定是同一个磁盘文件。</p>
+<p><img src="https://raw.githubusercontent.com/romafang/picgo/master/data/202403261806729.png" alt="img"></p>
+<p><strong>Linux中用户操作的每个终端都被视作一个设备文件, 当前操作的终端文件可以使用 &#x2F;dev&#x2F;tty表示。</strong></p>
+<p><strong>打开的最大文件数</strong></p>
+<p>每一个进程对应的文件描述符表能够存储的打开的文件数是有限制的, 默认为1024个，这个默认值是可以修改的，支持打开的最大文件数据取决于操作系统的硬件配置。</p>
+<p><strong>默认分配的文件描述符</strong></p>
+<p>当一个进程被启动之后，内核PCB的文件描述符表中就已经分配了三个文件描述符，这三个文件描述符对应的都是当前启动这个进程的终端文件（Linux中一切皆文件，终端就是一个设备文件，在 &#x2F;dev 目录中）</p>
+<p>STDIN_FILENO：标准输入，可以通过这个文件描述符将数据输入到终端文件中，宏值为0。<br>STDOUT_FILENO：标准输出，可以通过这个文件描述符将数据通过终端输出出来，宏值为1。<br>STDERR_FILENO：标准错误，可以通过这个文件描述符将错误信息通过终端输出出来，宏值为2。<br>这三个默认分配的文件描述符是可以通过close()函数关闭掉，但是<strong>关闭之后当前进程也就不能和当前终端进行输入或者输出的信息交互了。</strong></p>
+<p><strong>给新打开的文件分配文件描述符</strong></p>
+<p>因为进程启动之后，文件描述符表中的0,1,2就被分配出去了，因此从3开始分配<br>在进程中每打开一个文件，就会给这个文件分配一个新的文件描述符，比如：<br>通过open()函数打开 &#x2F;hello.txt，文件描述符 3 被分配给了这个文件，保持这个打开状态，再次通过open()函数打开 &#x2F;hello.txt，文件描述符 4 被分配给了这个文件，也就是说一个进程中<strong>不同的文件描述符打开的磁盘文件可能是同一个。</strong><br>通过open()函数打开 &#x2F;hello.txt，文件描述符 3 被分配给了这个文件，将打开的文件关闭，此时文件描述符3就被释放了。再次通过open()函数打开 &#x2F;hello.txt，文件描述符 3 被分配给了这个文件，也就是说<strong>打开的新文件会关联文件描述符表中最小的没有被占用的文件描述符。</strong></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结:"></a>总结:</h2><p>每个进程对应的文件描述符表默认支持打开的最大文件数为 1024，可以修改<br>每个进程的文件描述符表中都已经默认分配了三个文件描述符，对应的都是当前终端文件（&#x2F;dev&#x2F;tty）<br>每打开新的文件，内核会从进程的文件描述符表中找到一个空闲的没有别占用的文件描述符与其进行关联<br>文件描述符表中不同的文件描述符可以对应同一个磁盘文件<br>每个进程文件描述符表中的文件描述符值是唯一的，不会重复</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://Fengzi7.magicalroom.com">封子期</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://fengzi7.magicalroom.com/2024/03/26/%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80%E5%92%8C%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6/">https://fengzi7.magicalroom.com/2024/03/26/虚拟地址和文件描述符/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://Fengzi7.magicalroom.com" target="_blank">Fengzi7的奇妙空间</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://www.4kbizhi.com/d/file/2023/04/23/small085241B2SIA1682211161.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/03/21/C++%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/" title="C++常见函数"><img class="cover" src="https://www.4kbizhi.com/d/file/2023/06/14/small171014uQgXb1686733814.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">C++常见函数</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/boqi.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">封子期</div><div class="author-info__description">这个人很懒，请出门左转</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">1</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/xxxxx" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:xxxxxx@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="tencent://AddContact/?fromId=45&amp;fromSubId=1&amp;subcmd=all&amp;uin=728831102&amp;website=www.oicqzone.com" target="_blank" title="QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="mailto:1976083684@qq.com" target="_blank" title="Email"><i class="fas fa-envelope-open-text"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4"><span class="toc-text">1. 虚拟地址空间</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E5%AD%98%E5%9C%A8%E7%9A%84%E6%84%8F%E4%B9%89"><span class="toc-text">1.1 存在的意义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E5%88%86%E5%8C%BA"><span class="toc-text">1.2 分区</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="toc-text">2. 文件描述符</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="toc-text">2.1 文件描述符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6%E8%A1%A8"><span class="toc-text">2.2 文件描述符表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结:</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/03/26/%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80%E5%92%8C%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6/" title="无题"><img src="https://www.4kbizhi.com/d/file/2023/04/23/small085241B2SIA1682211161.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无题"/></a><div class="content"><a class="title" href="/2024/03/26/%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80%E5%92%8C%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6/" title="无题">无题</a><time datetime="2024-03-26T09:30:04.592Z" title="发表于 2024-03-26 17:30:04">2024-03-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/03/21/C++%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/" title="C++常见函数"><img src="https://www.4kbizhi.com/d/file/2023/06/14/small171014uQgXb1686733814.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="C++常见函数"/></a><div class="content"><a class="title" href="/2024/03/21/C++%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0/" title="C++常见函数">C++常见函数</a><time datetime="2024-03-21T02:05:51.254Z" title="发表于 2024-03-21 10:05:51">2024-03-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/03/20/STL%E6%9F%A5%E6%BC%8F%E8%A1%A5%E7%BC%BA/" title="STL查漏补缺"><img src="https://www.4kbizhi.com/d/file/2023/06/14/small171014uQgXb1686733814.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="STL查漏补缺"/></a><div class="content"><a class="title" href="/2024/03/20/STL%E6%9F%A5%E6%BC%8F%E8%A1%A5%E7%BC%BA/" title="STL查漏补缺">STL查漏补缺</a><time datetime="2024-03-20T03:49:28.924Z" title="发表于 2024-03-20 11:49:28">2024-03-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/03/18/stl/" title="STL"><img src="https://www.4kbizhi.com/d/file/2023/06/14/small171014uQgXb1686733814.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="STL"/></a><div class="content"><a class="title" href="/2024/03/18/stl/" title="STL">STL</a><time datetime="2024-03-18T13:46:47.366Z" title="发表于 2024-03-18 21:46:47">2024-03-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/03/18/socket/" title="socket"><img src="https://www.4kbizhi.com/d/file/2023/04/23/small085241B2SIA1682211161.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="socket"/></a><div class="content"><a class="title" href="/2024/03/18/socket/" title="socket">socket</a><time datetime="2024-03-18T06:45:14.362Z" title="发表于 2024-03-18 14:45:14">2024-03-18</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://www.4kbizhi.com/d/file/2023/04/23/small085241B2SIA1682211161.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By 封子期</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=4.13.0"></script><script src="/js/main.js?v=4.13.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.33/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><div class="aplayer no-destroy" data-id="1957725779" data-server="netease" data-type="song" data-mini="true" data-autoplay="true" data-lrcType="-1"> </div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = true;
+document.body.addEventListener('input', POWERMODE);
+</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.3/metingjs/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener
+  btf.removeGlobalFnEvent('pjax')
+  btf.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=4.13.0"></script></div></div></body></html>
